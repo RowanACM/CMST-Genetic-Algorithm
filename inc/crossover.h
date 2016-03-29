@@ -1,1 +1,1 @@
-int * crossover(int * parents, double crossover_prob);
+char * crossover(char * parents, double crossover_prob);
