@@ -1,7 +1,10 @@
+#ifndef INDIVIDUAL
+#define INDIVIDUAL
 struct individual
 {
 	double fitness;
-	int * genome;
+	int genome[0];
 };
 
 int individual_size;
+#endif
