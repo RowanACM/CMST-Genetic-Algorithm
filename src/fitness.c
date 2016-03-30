@@ -28,8 +28,8 @@
 // Record the total weight of this graph, this will be used to determine the individual's fitness value.
 
 // Determing the capacitance of the MST's branches
-// Given an MST (An array of paths) of size N-1 (N being the number of nodes) represented byt the variable MST
-// And an integer value that represents the root node for the MST represented by the variable R
+// Given an MST (An array of paths) of size N-1 (N being the number of nodes) represented by the variable MST,
+// And an integer value that represents the root node for the MST represented by the variable R.
 // The capcitance value of each branc of the MST will be stored in an array represented by the variabel Branches
 // The length of this array will give us the number of branches in the CMST and the weight of each branch
 // begin
@@ -50,3 +50,11 @@
 //			index = index + 1
 //
 // end
+// 
+// Total fitness should be equal to the weight of the graph plus some value determined by the number of branches and/or the weight of the branches.
+// Fitness Variables
+//	Median/Mean/Maximum/Minimum weight of edges
+//	'	'	'	'	' of nodes
+//	Weight of spanning tree
+//	Number of branches over the capacitance, and the amount each are over by
+//	
