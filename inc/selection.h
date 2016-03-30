@@ -1,1 +1,1 @@
-int * tournament_selection(int * population, int tourn_size);
+int * tournament_selection(int * population,int populationSize, int tourn_size);
