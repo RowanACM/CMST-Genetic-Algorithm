@@ -60,7 +60,6 @@ int main(int argc, char * argv[])//char * input_file, int num_generations, int p
 	//
 	
 	char * population = generate_population(population_size, genome_length);
-	return 1;
 	for(int i = 0; i < num_generations; i++)
 	{
 		// Fitness
@@ -69,7 +68,7 @@ int main(int argc, char * argv[])//char * input_file, int num_generations, int p
 			fitness((struct individual *)(population + (j * individual_size)));
 		}
 		// End Fitness
-		
+		return 1;
 		// Selection
   		char * breeding_pool = tournament_selection(population, population_size, tourn_size);
 		// End Selection
@@ -78,9 +77,13 @@ int main(int argc, char * argv[])//char * input_file, int num_generations, int p
 		char * children;
 		for(int j = 0; j < population_size - 1; j = j + 2)
 		{
+			// TODO: Make this actually do stuff
 			children = crossover(breeding_pool, crossover_prob);
-			population[j * individual_size] = children[0];
-			population[(j + 1) * individual_size] = children[individual_size];
+			for(int k = 0; k < individual_size; k++)
+			{
+				population[(individual_size * j) + k] = children[k];
+				population[(individual_size * (j + 1)) + k] = children[individual_size + k];
+			}
 			breeding_pool += individual_size * 2;
 		}
 		free(breeding_pool);
