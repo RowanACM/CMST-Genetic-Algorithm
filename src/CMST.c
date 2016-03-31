@@ -2,7 +2,7 @@
  *  Author: Nick LaPosta
  *  Version: 0.5
  *  Last Update: 3/31/2016
- *  Comments: Finished main function. Only need to finish file input.
+ *  Comments: Added Comments.
  */
 
 #include <stdio.h>
@@ -22,6 +22,14 @@ int set_globals(char * filename)
 	return 5;
 }
 
+/*
+ *  This function creates a set or randomized individuals
+ *
+ *   param - int pop_size: Number of individuals to create
+ *   param - int genome_length: Length of each individual's genome
+ *
+ *  return - pop: A pointer to the generated set of individuals
+ */
 char * generate_population(int pop_size, int genome_length)
 {
 	char * pop = malloc(individual_size * pop_size);
@@ -44,6 +52,9 @@ char * generate_population(int pop_size, int genome_length)
 	return pop;
 }
 
+/*
+ *  This function handles all of the Genetic Algorithm execution. Calls all of the GA functions and keeps the data organized.
+ */
 int main(int argc, char * argv[])
 {
 	char * input_file     = argv[1];
@@ -63,6 +74,7 @@ int main(int argc, char * argv[])
 	for(int i = 0; i < num_generations; i++)
 	{
 		// Fitness
+		// Assign each individual their fitness based on their genome
 		for(int j = 0; j < population_size; j++)
 		{
 			fitness((struct individual *)(population + (j * individual_size)));
@@ -70,14 +82,15 @@ int main(int argc, char * argv[])
 		// End Fitness
 		
 		// Selection
+		// Select a biased set of individuals based on their fitness
   		char * breeding_pool = tournament_selection(population, population_size, tourn_size);
 		// End Selection
 		
 		// Crossover
+		// Trade genome tails at a random crossing point
 		char * children;
 		for(int j = 0; j < population_size - 1; j = j + 2)
 		{
-			// TODO: Make this actually do stuff
 			children = crossover(breeding_pool, crossover_prob);
 			for(int k = 0; k < individual_size; k++)
 			{
@@ -92,6 +105,7 @@ int main(int argc, char * argv[])
 		// End Crossover
 
 		// Mutation
+		// Randomly change an element of an individual's genome based on a mutation probability
 		for(int j = 0; j < population_size; j++)
 		{
 			mutation((struct individual *) (population + (individual_size * j)), mutation_prob);
