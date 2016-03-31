@@ -1,8 +1,8 @@
 /*
  *  Author: Nick LaPosta
- *  Version: 0.1
- *  Last Update: 3/28/2016
- *  Comments: Added set_globals stub and comments and checked memory allocation
+ *  Version: 0.5
+ *  Last Update: 3/31/2016
+ *  Comments: Finished main function. Only need to finish file input.
  */
 
 #include <stdio.h>
@@ -44,7 +44,7 @@ char * generate_population(int pop_size, int genome_length)
 	return pop;
 }
 
-int main(int argc, char * argv[])//char * input_file, int num_generations, int population_size, int tourn_size, double crossover_prob)
+int main(int argc, char * argv[])
 {
 	char * input_file     = argv[1];
 	int num_generations   = atoi(argv[2]);
@@ -68,7 +68,7 @@ int main(int argc, char * argv[])//char * input_file, int num_generations, int p
 			fitness((struct individual *)(population + (j * individual_size)));
 		}
 		// End Fitness
-		return 1;
+		
 		// Selection
   		char * breeding_pool = tournament_selection(population, population_size, tourn_size);
 		// End Selection
@@ -86,12 +86,16 @@ int main(int argc, char * argv[])//char * input_file, int num_generations, int p
 			}
 			breeding_pool += individual_size * 2;
 		}
-		free(breeding_pool);
+
+		free(breeding_pool - ((population_size / 2) * individual_size * 2));
 		free(children);
 		// End Crossover
-		
+
 		// Mutation
-		// TOTO: Mutate offspring in vat of radioactive waste
+		for(int j = 0; j < population_size; j++)
+		{
+			mutation((struct individual *) (population + (individual_size * j)), mutation_prob);
+		}
 		// End Mutation
 	}
 	free(population);
