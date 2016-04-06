@@ -1,8 +1,8 @@
 /*
- * selection2.c
+ * selection.c
  *
  *  Created on: Mar 30, 2016
- *      Author: seanmulhall
+ *      Author: Sean Mulhall & Brent Rickards
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,9 +11,12 @@
 #include "selection.h"
 
 int ind_size = 8;
-
+/**
+test method
+**/
 int main(void)
 {
+	char * selection(char * population, int populationSize, int tournSize);
 	char * pop = malloc(ind_size * 200);
 	for (int i = 0; i < 200; i++)
 	{
@@ -59,6 +62,5 @@ char * selection(char * population, int populationSize, int tournSize)
 	}
 
 	free(bestRef);
-	free(fitness);
 	return winners;
 }
