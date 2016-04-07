@@ -27,29 +27,35 @@
 // Apply prims to our new graph, an array of paths should be obtained
 // Record the total weight of this graph, this will be used to determine the individual's fitness value.
 
-// Determing the capacitance of the MST's branches
-// Given an MST (An array of paths) of size N-1 (N being the number of nodes) represented by the variable MST,
-// And an integer value that represents the root node for the MST represented by the variable R.
-// The capcitance value of each branc of the MST will be stored in an array represented by the variabel Branches
-// The length of this array will give us the number of branches in the CMST and the weight of each branch
-// begin
-//
-//	R
-//	MST
-//	Branches
-//	root = R
-//	index = 0
-//	partner (represnts the other node in a root node path, example (root, x) or (x, root), x is the partner.
-//
-//	Iterate through the MST to find the first instance of a path that contains the root
-//		When root is found,
-//			Get the capacitance of the partner and set Branches[i] = Branches[i] + partner_cap
-//			Set root = partner
-//		If root is not found,
-//			Set root = R
-//			index = index + 1
-//
-// end
+// We need a function to return an array of branch capacities
+/*
+begin
+
+	int[] Branches;
+	Stack S;
+	int final discovered = -1;
+
+ 	RootDFS(Tree, root){
+		int index = 0;
+		for each vertice v Tree.adjacent(root){
+			Branches = realloc(index+1);
+			S.push(v)
+			while S is not empty
+				v = S.pop()
+			        if v is not labeled as discovered:
+				label v as discovered{
+					Branches[i] = Branches[i] + MST[v][v];
+					MST[v][v] = discovered; 
+				}
+			        
+			        for all edges from v to w in G.adjacentEdges(v) do
+			        	S.push(w)
+			index++;
+		}
+	}
+
+end
+*/
 // 
 // Total fitness should be equal to the weight of the graph plus some value determined by the number of branches and/or the weight of the branches.
 // Fitness Variables
@@ -57,4 +63,9 @@
 //	'	'	'	'	' of nodes
 //	Weight of spanning tree
 //	Number of branches over the capacitance, and the amount each are over by
-//	
+//
+/*
+
+h(tree) = W_tree + (C_over(Branches_over/Brances_total)(W_avg));
+
+*/
