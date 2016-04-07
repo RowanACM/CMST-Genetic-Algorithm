@@ -2,7 +2,7 @@
 // MST meets the criteria of our CMST
 
 // Representation of an upper triangle matrix using a 2D array
-// For a any path (a, b), the path weight can bb found at the 2D array location
+// For any path (a, b), the path weight can be found at the 2D array location
 // begin
 // if b < a
 // Array[b][a - b]
