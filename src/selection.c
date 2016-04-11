@@ -1,4 +1,4 @@
-<<<<<<< 238862c90d545465b7e0d6d3a2d69c93b28d51db
+
 /*
  * selection.c
  *
@@ -15,6 +15,7 @@ int ind_size = 8;
 /**
 test method
 **/
+/**
 int main(void)
 {
 	char * selection(char * population, int populationSize, int tournSize);
@@ -33,20 +34,21 @@ int main(void)
 
 	char * newPop = selection(pop, 8, 5);
 }
-
-char * selection(char * population, int populationSize, int tournSize)
+**/
+char * tournament_selection(char * population, int populationSize, int tournSize)
 {
 
 	char * winners = malloc(ind_size * populationSize);
 	char * bestRef;//pointer to the best individual
 	double best = INT_MAX;//current best fitness
 	double fitness;
+	struct individual * ind = malloc(ind_size);
 
 	for (int w = 0; w < populationSize; w++)//do populationSize tournaments
 	{
 		for (int c = 0; c < tournSize; c++)//pull out tournSize of individuals
 		{
-			fitness = &(population + ind_size * (rand()%(populationSize + 1)));//pull out random individual and store its fitness
+			fitness = (*(struct individual *)(population + ind_size * (rand()%populationSize))).fitness;//pull out random individual and store its fitness
 			if(fitness < best)//compare fitnesses to the current best
 			{
 				best = fitness;//assign that fitness to best if its better
@@ -58,10 +60,18 @@ char * selection(char * population, int populationSize, int tournSize)
 				{
 				winners[(ind_size*j)+i] = ((char*)bestRef)[i];
 				}
+				
 			}
 		}
 	}
+	
+	
+	for (int i = 0; i < populationSize; i++)
+	{
+		ind = *(winners[i]);
+		printf("%f \n",(*ind).fitness);
+			
+	}
 
-	free(bestRef);
 	return winners;
 }
