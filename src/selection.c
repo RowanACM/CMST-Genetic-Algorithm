@@ -1,4 +1,3 @@
-
 /*
  * selection.c
  *
@@ -19,13 +18,12 @@ char * tournament_selection(char * population, int populationSize, int tournSize
 	char * bestRef;//pointer to the best individual
 	double best;
 	struct individual * current_fitness;
-	int genome_length = 15;
-	
 	struct individual * ind = malloc(individual_size);
 
 	for (int w = 0; w < populationSize; w++)//do populationSize tournaments
 	{
 		best = INT_MAX;//current best fitness(moved down here to reset best every time we set up a new tournament) 
+		
 		for (int c = 0; c < tournSize; c++)//pull out tournSize of individuals
 		{
 			current_fitness = (struct individual *)(population + individual_size * (rand()%populationSize));//pull out random individual and store its fitness			
@@ -44,21 +42,5 @@ char * tournament_selection(char * population, int populationSize, int tournSize
 					
 	}//winners loop 
 	
-	printf("%i\n", genome_length);
-	
-	
-	for (int i = 0; i < populationSize; i++)
-	{		
-		printf("Fitness:%f \n", (*(struct individual*)(winners+(individual_size*i))).fitness);
-		printf("genomes \n");
-		
-		for (int j = 0; j < genome_length; j++)
-		{
-		printf("%i \n", (*(struct individual*)(winners+(individual_size*i))).genome[j]);
-		}
-		
-		printf("\n");		
-	}
-
 	return winners;
 }
