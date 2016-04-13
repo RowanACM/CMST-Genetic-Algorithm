@@ -5,16 +5,50 @@
 // For any path (a, b), the path weight can be found at the 2D array location
 // begin
 // if b < a
-// Array[b][a - b]
+// Array[b][a]
 // else
-// Array[a][b - a]
+// Array[a][b]
 // end
-// Paths of the form (a, a) and (b, b) return the weigth of the node a and b respectively.
 
 
 // A single individual is passed as a parameter
 // We are given the pointer to the individual within the population
 
+#include "individual.h"
+
+int getCost(int a, int b){
+	
+	if(b < a) 
+		return cost_matrix[b][a];
+	else
+		return cost_matrix[a][b];
+}
+
+int getMaxCost(){
+	
+	int max = getCost(0,0);
+	for(int i = 1; i < cost_matrix.size; i++){
+		
+		for(int j = 0; j < cost_matrix[j]; j++){
+			max
+		}
+
+	}
+
+}
+
+
+void fitness(individual ind)
+{
+	//ind.genome
+	int Cmax = getMaxCost();
+	float P1, P2;
+
+	float new_matrix[nodes];
+
+
+
+}
 // Obtain the gnome from the individual
 
 // Obtain the largest edge weight, assign that value to C_max
