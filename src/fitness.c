@@ -16,37 +16,50 @@
 
 #include "individual.h"
 
-int getCost(int a, int b){
-	
-	if(b < a) 
-		return cost_matrix[b][a];
+int getCost(int a, int b, int * matrix){
+	if(b > a) 
+		return matrix[b][a];
 	else
-		return cost_matrix[a][b];
+		return matrix[a][b];
 }
 
 int getMaxCost(){
-	
-	int max = getCost(0,0);
-	for(int i = 1; i < cost_matrix.size; i++){
-		
-		for(int j = 0; j < cost_matrix[j]; j++){
-			max
+	int max = getCost(1,0, cost_matrix);
+	int cost;
+	for(int i = 1; i < nodes; i++){
+		for(int j = 0; j < i; j++){			
+				
+			cost = getCost(i, j, cost_matrix);
+			
+			if(max < cost)
+				max = cost;
 		}
-
 	}
+}
 
+
+int* generateNewCostMatrix(){
+	int * new_matrix = malloc(nodes);
+	for(int i = 0; i < nodes; i++)
+		
+		float * costs = malloc(i+1);
+		new_matrix[i] = costs;
+
+		for( int j = 0; j <= i; i++){
+		
+			new_matrix[i][j] = getCost[i][j] + (cost_max * ((P1 * genome[i][j]) + (P2 * (genome[i][i] + genome[j][j]))));
+		
+		}
 }
 
 
 void fitness(individual ind)
 {
 	//ind.genome
-	int Cmax = getMaxCost();
-	float P1, P2;
+	int cost_max = getMaxCost();
+	float P1 = 1, P2 = 1;
 
-	float new_matrix[nodes];
-
-
+	int * new_matrix = malloc(nodes);
 
 }
 // Obtain the gnome from the individual
