@@ -10,7 +10,17 @@
 #include "individual.h"
 #include "selection.h"
 
-
+/**
+* This function sets up a number of tournaments where a number of individuals "fight" to see 
+* who has the better fitness(lower is better). The winners of each fight are stored into a
+* winners array, which is returned via a pointer.
+*
+* param - char * population - pointer to the current population array
+* param - int population size 
+* param - int tournSize - the size of each tournament 
+*
+* return - char * winners - pointer to the winners array
+*/
 char * tournament_selection(char * population, int populationSize, int tournSize)
 {
 
