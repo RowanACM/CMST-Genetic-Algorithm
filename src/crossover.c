@@ -1,5 +1,4 @@
 #include <stdlib.h>
-
 #include "individual.h"
 #include "crossover.h"
 
@@ -19,19 +18,19 @@ char * crossover(char * parents, double crossover_prob)
 
 
 		for (int i = 0; i < crossover_point; i++) {
-			//offspring[0].genome[i] = parent[0].genome[i];
-			//offspring[1].genome[i] = parent[1].genome[i];
-			child1.genome[i] = parent[0].genome[i];
-			child2.genome[i] = parent[1].genome[i];
+
+			child1.genome[i] = parents[0].genome[i];
+			child2.genome[i] = parents[individual_size + 1].genome[i];  //index for parents was 1
+			
 		}
 		for (int i = crossover_point; i < genome_length; i++) {
-			//offspring[1].genome[i] = parent[0].genome[i];
-			//offspring[0].genome[i] = parent[1].genome[i];
-			child2.genome[i] = parent[0].genome[i];
-			child1.genome[i] = parent[1].genome[i];
+
+			child2.genome[i] = parents[0].genome[i];
+			child1.genome[i] = parents[individual_size + 1].genome[i];  //index for parents was 1
+			
 		}
 		offspring[0] = child1;
-		offspring[12] = child2;
+		offspring[individual_size + 1] = child2;  //index was 12
 
 
 	}
