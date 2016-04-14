@@ -28,10 +28,10 @@ int getBias(int x, int y){
 int getMaxCost(){
 	int max = cost_matrix[1][0];
 	int cost;
-	for(int i = 1; i < nodes; i++){
+	for(int i = 2; i < nodes; i++){
 		for(int j = 0; j < i; j++){			
 				
-			cost = getCost(i, j, cost_matrix);
+			cost = cost_matrix[i][j];
 			
 			if(max < cost)
 				max = cost;
@@ -40,20 +40,26 @@ int getMaxCost(){
 	return max;
 }
 
+int getAvgCost(){
+	int cost;
+	for(int i = 1; i < nodes; i++)
+		for(int j = 0; j < i; j++)
+			cost = cost + cost_matrix[i][j];
+	return cost/edge_count;
+}
 
 int * generateNewCostMatrix(){
 	int * new_matrix = malloc(nodes);
+	int P1 = 1, P2 = 1;
+
 	for(int i = 0; i < nodes; i++){
 		
 		float * costs = malloc(i+1);
 		new_matrix[i] = costs;
 
-		for( int j = 0; j < i; i++){
-				
+		for( int j = 0; j < i; i++)
+			new_matrix[i][j] = cost_matrix[i][j] + (cost_max * ((P1 * getBias(i, j)) + (P2 * (getBias(i, i) + getBias(j, j)))));
 
-				new_matrix[i][j] = cost_matrix[i][j] + (cost_max * ((P1 * getBias(i, j)) + (P2 * (getBias(i, i) + getBias(j, j)))));
-		}
-	
 		// Copy node value
 		new_matrix[i][i] = cost_matrix[i][i];
 	}
@@ -114,7 +120,7 @@ int * prims(int * graph, int root){
 	}
 	
 	printf("Prims end");
-
+	mst_wight = prims_weight;
 	return mst;
 }
 
@@ -143,14 +149,23 @@ int * getAdjacent(int node, int * mst){
 }
 
 
+
+
 void fitness(struct individual * ind, int root)
 {
 	int * bias = (*ind).genome;
-	int cost_max = getMaxCost();
 	int edge_count = (nodes * (nodes - 1)) / 2;
-	float P1 = 1, P2 = 1;
+
+	int cost_max = getMaxCost();
+	int cost_avg = getAvgCost();
+	int mst_weight = 0;
+	int branches = 0;
+	int branches_over = 0;
+	int cap_over = 0;
 
 	int * new_matrix = generateNewCostMatrix();
+
+	
 
 }
 // Obtain the gnome from the individual
