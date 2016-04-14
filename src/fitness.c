@@ -15,16 +15,18 @@
 // We are given the pointer to the individual within the population
 
 #include "individual.h"
+#include "fitness.h"
 
-int getCost(int a, int b, int * matrix){
-	if(b > a) 
-		return matrix[b][a];
+
+int getBias(int x, int y){
+	if(x == y)
+		return bias[x + edge_count];
 	else
-		return matrix[a][b];
+		return bias[(((x - 1) * (x - 2)) / 2) + (y - 1)];
 }
 
 int getMaxCost(){
-	int max = getCost(1,0, cost_matrix);
+	int max = cost_matrix[1][0];
 	int cost;
 	for(int i = 1; i < nodes; i++){
 		for(int j = 0; j < i; j++){			
@@ -35,31 +37,120 @@ int getMaxCost(){
 				max = cost;
 		}
 	}
+	return max;
 }
 
 
-int* generateNewCostMatrix(){
+int * generateNewCostMatrix(){
 	int * new_matrix = malloc(nodes);
-	for(int i = 0; i < nodes; i++)
+	for(int i = 0; i < nodes; i++){
 		
 		float * costs = malloc(i+1);
 		new_matrix[i] = costs;
 
-		for( int j = 0; j <= i; i++){
-		
-			new_matrix[i][j] = getCost[i][j] + (cost_max * ((P1 * genome[i][j]) + (P2 * (genome[i][i] + genome[j][j]))));
-		
+		for( int j = 0; j < i; i++){
+				
+
+				new_matrix[i][j] = cost_matrix[i][j] + (cost_max * ((P1 * getBias(i, j)) + (P2 * (getBias(i, i) + getBias(j, j)))));
 		}
+	
+		// Copy node value
+		new_matrix[i][i] = cost_matrix[i][i];
+	}
+	return new_matrix;
 }
 
 
-void fitness(individual ind)
+int * prims(int * graph, int root){
+
+	printf("Prims begin");
+
+	int * mst = malloc(nodes);
+	int mst_index = 0;
+	int * nodes_visited = malloc(nodes);
+	int nodes_index = 0;
+	float min_cost = INT_MAX;
+	float cost = 0;
+	float prims_weight = 0;
+	int temp = 0;
+
+	nodes_visited[nodes_index] = root;
+	nodex_index++;
+	
+
+	while(nodex_index < nodes){
+		
+		int * min_path = malloc(2);
+		
+		for(int i = 0; i <= node_index; i++){
+			int node = nodes_visited[i];
+			for(int j = 0; j < edge_count; j++){
+
+				if(i < j){
+					temp = i;
+					i = j;
+					j = temp;
+				}
+				
+				if(i > j)
+					cost = new_matrix[i][j];
+				else
+					cost = INT_MAX;
+				
+				if(cost < min_cost){
+					min_path[0] = i;
+					min_path[1] = j;
+					min_cost = cost;
+				}
+			}
+		}
+		
+		prims_weight = prims_weight + min_cost;
+		min_cost = INT_MAX;
+		new_matrix[min_path[0]][min_path[1]] = INT_MAX;
+		mst[mst_index] = min_path;
+		mst_index++;
+		node_index++;
+	}
+	
+	printf("Prims end");
+
+	return mst;
+}
+
+
+int * getAdjacent(int node, int * mst){
+
+	int * adjacent = { 0 };
+	int adj_node = 0;
+	int index = 0;
+
+	for(int i = 0; i < nodes - 1; i++){
+		if(node == mst[i][0])
+			adj_node == mst[i][0];	
+		else if(node == mst[i][1])
+			adj_node == mst[i][1];
+		if(adj_node != 0){
+			adjacent[index] = adj_node;
+			adjacent = (int *) realloc(adjacent, 1);
+			index++;
+		}
+	}
+
+	adjacent[index] = 0;
+
+	return adjacent;
+}
+
+
+void fitness(struct individual * ind, int root)
 {
-	//ind.genome
+	int * bias = (*ind).genome;
 	int cost_max = getMaxCost();
+	int edge_count = (nodes * (nodes - 1)) / 2;
 	float P1 = 1, P2 = 1;
 
-	int * new_matrix = malloc(nodes);
+	int * new_matrix = generateNewCostMatrix();
 
 }
 // Obtain the gnome from the individual
