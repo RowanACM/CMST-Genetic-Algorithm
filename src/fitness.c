@@ -71,9 +71,9 @@ int * prims(int * graph, int root){
 
 	printf("Prims begin");
 
-	int * mst = malloc(nodes);
+	int mst[nodes];
 	int mst_index = 0;
-	int * nodes_visited = malloc(nodes);
+	int nodes_visited[nodes];
 	int nodes_index = 0;
 	float min_cost = INT_MAX;
 	float cost = 0;
@@ -86,28 +86,16 @@ int * prims(int * graph, int root){
 
 	while(nodex_index < nodes){
 		
-		int * min_path = malloc(2);
+		int min_path[2];
 		
 		for(int i = 0; i <= node_index; i++){
 			int node = nodes_visited[i];
-			for(int j = 0; j < edge_count; j++){
-
-				if(i < j){
-					temp = i;
-					i = j;
-					j = temp;
-				}
-				
-				if(i > j)
-					cost = new_matrix[i][j];
+			for(int j = node; j < nodes; j++){				
+				if(j == node)
+					for(int k = 0; k < node; k++)
+						cost = new_matrix[j][k];
 				else
-					cost = INT_MAX;
-				
-				if(cost < min_cost){
-					min_path[0] = i;
-					min_path[1] = j;
-					min_cost = cost;
-				}
+					edge[node][j];
 			}
 		}
 		
