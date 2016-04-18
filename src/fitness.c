@@ -19,8 +19,9 @@
 #include "stack.c"
 
 int getBias(int x, int y){
+	int edge_count = (nodes * (nodes - 1)) / 2;
 	if(x == y)
-		return bias[x + edge_count];
+		return bias[x + (nodes * (nodes - 1))/2];
 	else
 		return bias[(((x - 1) * (x - 2)) / 2) + (y - 1)];
 }
@@ -48,9 +49,10 @@ int getAvgCost(){
 	return cost/edge_count;
 }
 
-int * generateNewCostMatrix(){
+int * generateNewCostMatrix(int c_max){
 	int * new_matrix = malloc(nodes);
 	int P1 = 1, P2 = 1;
+	int c_max = getMaxCost();
 
 	for(int i = 0; i < nodes; i++){
 		
@@ -58,7 +60,7 @@ int * generateNewCostMatrix(){
 		new_matrix[i] = costs;
 
 		for( int j = 0; j < i; i++)
-			new_matrix[i][j] = cost_matrix[i][j] + (cost_max * ((P1 * getBias(i, j)) + (P2 * (getBias(i, i) + getBias(j, j)))));
+			new_matrix[i][j] = cost_matrix[i][j] + (c_max * ((P1 * getBias(i, j)) + (P2 * (getBias(i, i) + getBias(j, j)))));
 
 		// Copy node value
 		new_matrix[i][i] = cost_matrix[i][i];
@@ -119,7 +121,7 @@ int * prims(int * graph, int root){
 	}
 	
 	printf("Prims end");
-	mst_wight = prims_weight;
+	weight = prims_weight;
 	return mst;
 }
 
@@ -176,76 +178,41 @@ int * getAdjacent(int * mst, int node){
 }
 
 
+/*
+	TO DO-
+	Need original cost graph.
+	How do I handle recording the MST weight?
+	Should bias be passed to getBias()?
+	Garbage collection.
+	Test.
 
+
+*/
 
 float fitness(struct individual * ind, int root)
 {
 	int * bias = (*ind).genome;
-	int edge_count = (nodes * (nodes - 1)) / 2;
-
-	int cost_max = getMaxCost();
 	int cost_avg = getAvgCost();
-	int mst_weight = 0;
+	int weight = 0;
 	int branch_count = 0;
 	int branches_over = 0;
+	int max_cap;
 	int cap_over = 0;
 
-	int * new_matrix = generateNewCostMatrix();
+	int * new_matrix = generateNewCostMatrix(cost_max);
+	int * mst = prims(new_matrix, root);
+	int * branches = getBranches(mst, root);
 
+	branch_count = sizeof(branches) / 4;
+
+	for(int i = 0; i < branch_count; i++){
 	
-
-}
-// Obtain the gnome from the individual
-
-// Obtain the largest edge weight, assign that value to C_max
-// Assign values to P_1 and P_2, values must be between 0.0 & 1.0
-// Using the function C'_ij = C_ij + P_1 * (C_Max) * (b_ij) + P_2 * (C_Max) * (b_i + b_j) to build a new graph
-// where C'_ij is the new weight of the edge (i, j)
-// C'_ij should be an integer, thus the P compontents of the equation should be converted to integers before the addition
-// A new graph should be created/represented using these values
-
-// Apply prims to our new graph, an array of paths should be obtained
-// Record the total weight of this graph, this will be used to determine the individual's fitness value.
-
-// We need a function to return an array of branch capacities
-/*
-begin
-
-	int[] Branches;
-	Stack S;
-	int final discovered = -1;
-
- 	RootDFS(Tree, root){
-		int index = 0;
-		for each vertice v Tree.adjacent(root){
-			Branches = realloc(index+1);
-			S.push(v)
-			while S is not empty
-				v = S.pop()
-			        if v is not labeled as discovered:
-				label v as discovered{
-					Branches[i] = Branches[i] + MST[v][v];
-					MST[v][v] = discovered; 
-				}
-			        
-			        for all edges from v to w in G.adjacentEdges(v) do
-			        	S.push(w)
-			index++;
+		if(branches[i] > max_cap){
+			cap_over = cap_over + (branches[i] - max_cap);
+			branches_over++;
 		}
 	}
 
-end
-*/
-// 
-// Total fitness should be equal to the weight of the graph plus some value determined by the number of branches and/or the weight of the branches.
-// Fitness Variables
-//	Median/Mean/Maximum/Minimum weight of edges
-//	'	'	'	'	' of nodes
-//	Weight of spanning tree
-//	Number of branches over the capacitance, and the amount each are over by
-//
-/*
+	return weight + (cap_over * (branches_over / branch_count) * cost_avg);
 
-h(tree) = W_tree + (C_over(Branches_over/Brances_total)(W_avg));
-
-*/
+}
