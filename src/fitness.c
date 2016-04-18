@@ -16,7 +16,7 @@
 
 #include "individual.h"
 #include "fitness.h"
-
+#include "stack.c"
 
 int getBias(int x, int y){
 	if(x == y)
@@ -92,10 +92,21 @@ int * prims(int * graph, int root){
 			int node = nodes_visited[i];
 			for(int j = node; j < nodes; j++){				
 				if(j == node)
-					for(int k = 0; k < node; k++)
+					for(int k = 0; k < node; k++){
 						cost = new_matrix[j][k];
+						if(cost < min_cost){
+							min_cost = cost;
+							min_path[0] = node;
+							min_path[1] = k;
+						}
+					}
 				else
-					edge[node][j];
+					cost = new_matrix[j][node];
+				if(cost < min_cost){
+					min_cost = cost;
+					min_path[0] = j;
+					min_path[1] = node;
+				}
 			}
 		}
 		
@@ -113,7 +124,34 @@ int * prims(int * graph, int root){
 }
 
 
-int * getAdjacent(int node, int * mst){
+float * getBranches(int * tree, int root){
+
+	int * branches = { 0 };
+	struct stack s;
+	int discovered = INT_MAX;
+	
+	int * adj_root = getAdjacent(tree, root);
+
+	for(int i = 0; i < (sizeof(adj_root) / 4); i++){
+		realloc(branches, i + 1);
+		push(s, adj_root[i])
+		while(s.top > 0){
+			v = pop(s);
+			if(new_matrix[v][v] < INT_MAX){
+				branches[i] = branches[i] + new_matrix[v][v];
+				new_matrix[v][v] = INT_MAX;							
+			}
+			int * adjacent = getAdjacent(tree, v);
+			for(int j = 0; j < (sizeof(adjacent) / 4); j++)
+				push(s, adjacent[j]);
+		}
+	}	
+
+	return branches;
+}
+
+
+int * getAdjacent(int * mst, int node){
 
 	int * adjacent = { 0 };
 	int adj_node = 0;
@@ -121,12 +159,13 @@ int * getAdjacent(int node, int * mst){
 
 	for(int i = 0; i < nodes - 1; i++){
 		if(node == mst[i][0])
-			adj_node == mst[i][0];	
+			adj_node == mst[i][1];	
 		else if(node == mst[i][1])
-			adj_node == mst[i][1];
+			adj_node == mst[i][0];
 		if(adj_node != 0){
 			adjacent[index] = adj_node;
 			adjacent = (int *) realloc(adjacent, 1);
+			adj_node = 0;
 			index++;
 		}
 	}
@@ -139,7 +178,7 @@ int * getAdjacent(int node, int * mst){
 
 
 
-void fitness(struct individual * ind, int root)
+float fitness(struct individual * ind, int root)
 {
 	int * bias = (*ind).genome;
 	int edge_count = (nodes * (nodes - 1)) / 2;
@@ -147,7 +186,7 @@ void fitness(struct individual * ind, int root)
 	int cost_max = getMaxCost();
 	int cost_avg = getAvgCost();
 	int mst_weight = 0;
-	int branches = 0;
+	int branch_count = 0;
 	int branches_over = 0;
 	int cap_over = 0;
 
