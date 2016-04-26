@@ -1,18 +1,6 @@
 // The fitness of an individual will be determined by the weight of the MST generated from its gnome and how well the 
 // MST meets the criteria of our CMST
 
-// Representation of an upper triangle matrix using a 2D array
-// For any path (a, b), the path weight can be found at the 2D array location
-// begin
-// if b < a
-// Array[b][a]
-// else
-// Array[a][b]
-// end
-
-
-// A single individual is passed as a parameter
-// We are given the pointer to the individual within the population
 
 #include "individual.h"
 #include "fitness.h"
@@ -180,9 +168,6 @@ int * getAdjacent(int * mst, int node){
 
 /*
 	TO DO-
-	Need original cost graph.
-	How do I handle recording the MST weight?
-	Should bias be passed to getBias()?
 	Garbage collection.
 	Test.
 
