@@ -198,6 +198,7 @@ float fitness(struct individual * ind, int root)
 		}
 	}
 
-	return weight + (cap_over * (branches_over / branch_count) * cost_avg);
-
+	int fit = weight + (cap_over * (branches_over / branch_count) * cost_avg);
+	(*ind).fitness = fit;
+	
 }
