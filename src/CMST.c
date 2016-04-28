@@ -55,25 +55,21 @@ char * generate_population(int pop_size, int genome_length)
 /*
  *  This function handles all of the Genetic Algorithm execution. Calls all of the GA functions and keeps the data organized.
  */
-int main(int argc, char * argv[])
+int main(int pop_size)
 {
-	char * input_file     = argv[1];
-	int num_generations   = atoi(argv[2]);
-	int population_size   = atoi(argv[3]);
-	int tourn_size        = atoi(argv[4]);
-	double crossover_prob = atof(argv[5]);
-	double mutation_prob  = atof(argv[6]);
 	
 	// TODO: Take input file and set globals from that
 	int nodes = set_globals(input_file);
 	int genome_length = (nodes * (nodes + 1)) / 2;
 	individual_size = sizeof(struct individual) + (sizeof(int) * (genome_length));
-	//
 
-	char * ind = generate_population(1, genome_length);
+	char pop[] = generate_population(pop_size, genome_length);
+	
+	for(int i = 0; i < pop_size; i++){
+		fitness((*pop[i]), 1);
+		printf("%d, %d", i, (*pop[i]).fitness);
+	}
 
-	fitness((struct individual *)(ind + (individual_size)));
-	printf((*ind).fitness);	
-	freee(ind);
+
 	return 0;
 }

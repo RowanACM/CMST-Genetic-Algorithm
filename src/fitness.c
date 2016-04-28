@@ -6,12 +6,12 @@
 #include "fitness.h"
 #include "stack.c"
 
-int getBias(int x, int y){
+int getBias(struct individual * ind, int x, int y){
 	int edge_count = (nodes * (nodes - 1)) / 2;
 	if(x == y)
-		return bias[x + (nodes * (nodes - 1))/2];
+		return (*ind).genome[x + (nodes * (nodes - 1))/2];
 	else
-		return bias[(((x - 1) * (x - 2)) / 2) + (y - 1)];
+		return (*ind).genome[(((x - 1) * (x - 2)) / 2) + (y - 1)];
 }
 
 int getMaxCost(){
@@ -37,7 +37,7 @@ int getAvgCost(){
 	return cost/edge_count;
 }
 
-int * generateNewCostMatrix(int c_max){
+int * generateNewCostMatrix(struct individual * ind, int c_max){
 	int * new_matrix = malloc(nodes);
 	int P1 = 1, P2 = 1;
 	int c_max = getMaxCost();
@@ -48,7 +48,7 @@ int * generateNewCostMatrix(int c_max){
 		new_matrix[i] = costs;
 
 		for( int j = 0; j < i; i++)
-			new_matrix[i][j] = cost_matrix[i][j] + (c_max * ((P1 * getBias(i, j)) + (P2 * (getBias(i, i) + getBias(j, j)))));
+			new_matrix[i][j] = cost_matrix[i][j] + (c_max * ((P1 * getBias(ind, i, j)) + (P2 * (getBias(ind, i, i) + getBias(ind, j, j)))));
 
 		// Copy node value
 		new_matrix[i][i] = cost_matrix[i][i];
@@ -176,15 +176,14 @@ int * getAdjacent(int * mst, int node){
 
 float fitness(struct individual * ind, int root)
 {
-	int * bias = (*ind).genome;
 	int cost_avg = getAvgCost();
 	int weight = 0;
 	int branch_count = 0;
 	int branches_over = 0;
-	int max_cap;
+	int max_cap = 12;
 	int cap_over = 0;
 
-	int * new_matrix = generateNewCostMatrix(cost_max);
+	int * new_matrix = generateNewCostMatrix(ind, cost_max);
 	int * mst = prims(new_matrix, root);
 	int * branches = getBranches(mst, root);
 
