@@ -1,9 +1,8 @@
 // The fitness of an individual will be determined by the weight of the MST generated from its gnome and how well the 
 // MST meets the criteria of our CMST
 
-
-#include "individual.h"
-#include "fitness.h"
+#include "../inc/individual.h"
+#include "../inc/fitness.h"
 #include "stack.c"
 
 int getBias(struct individual * ind, int x, int y){
@@ -136,6 +135,8 @@ float * getBranches(int * tree, int root){
 				push(s, adjacent[j]);
 		}
 	}	
+	
+	free(adj_root);
 
 	return branches;
 }
@@ -168,7 +169,6 @@ int * getAdjacent(int * mst, int node){
 
 /*
 	TO DO-
-	Garbage collection.
 	Test.
 
 
@@ -196,6 +196,10 @@ float fitness(struct individual * ind, int root)
 			branches_over++;
 		}
 	}
+
+	free(new_matrix);
+	free(mst);
+	free(branches);
 
 	int fit = weight + (cap_over * (branches_over / branch_count) * cost_avg);
 	(*ind).fitness = fit;

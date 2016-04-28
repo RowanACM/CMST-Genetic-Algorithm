@@ -9,12 +9,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "CMST.h" 
-#include "individual.h"
-#include "fitness.h"
-#include "selection.h"
-#include "crossover.h"
-#include "mutation.h"
+#include "../inc/CMST.h" 
+#include "../inc/individual.h"
+#include "../inc/fitness.h"
+#include "../inc/selection.h"
+#include "../inc/crossover.h"
+#include "../inc/mutation.h"
+
+#define nodes 13
+
 
 int set_globals(char * filename)
 {
@@ -30,7 +33,7 @@ int set_globals(char * filename)
  *
  *  return - pop: A pointer to the generated set of individuals
  */
-char * generate_population(int pop_size, int genome_length)
+char * generate_population(int individual_size, int pop_size, int genome_length)
 {
 	char * pop = malloc(individual_size * pop_size);
 	
@@ -59,15 +62,14 @@ int main(int pop_size)
 {
 	
 	// TODO: Take input file and set globals from that
-	int nodes = set_globals(input_file);
 	int genome_length = (nodes * (nodes + 1)) / 2;
-	individual_size = sizeof(struct individual) + (sizeof(int) * (genome_length));
+	int individual_size = sizeof(struct individual) + (sizeof(int) * (genome_length));
 
-	char pop[] = generate_population(pop_size, genome_length);
+	char * pop = generate_population(individual_size, pop_size, genome_length);
 	
 	for(int i = 0; i < pop_size; i++){
-		fitness((*pop[i]), 1);
-		printf("%d, %d", i, (*pop[i]).fitness);
+		fitness(((struct individual *)pop)[i], 1);
+		printf("%d, %d", i, ((struct individual *)pop)[i].fitness);
 	}
 
 

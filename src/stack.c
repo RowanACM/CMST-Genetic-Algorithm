@@ -1,7 +1,7 @@
-#include "stack.h"
+#include "../inc/stack.h"
 
 void push(struct stack s, int number){
-	if(top => s.size){
+	if(s.top >= s.size){
 		s.size = s.size * 2;
 		realloc(s.stk, s.size);
 	}
