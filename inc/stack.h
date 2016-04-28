@@ -1,8 +1,8 @@
 struct stack{
-	int size = 5;
-	int stk[size];
-	int top = -1;
-}
+	int size;
+	int stk[5];
+	int top;
+};
 
 typedef struct stack STACK;
 

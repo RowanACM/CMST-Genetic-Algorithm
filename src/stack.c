@@ -1,4 +1,5 @@
 #include "../inc/stack.h"
+#include <stdlib.h>
 
 void push(struct stack s, int number){
 	if(s.top >= s.size){
@@ -10,7 +11,7 @@ void push(struct stack s, int number){
 }
 
 int pop(struct stack s){
-	if(s.top >= 0)
+	if(s.top >= 0){
 		int result = s.stk[s.top];
 		s.top = s.top - 1;
 		return result;

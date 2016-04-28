@@ -1,9 +1,9 @@
 // The fitness of an individual will be determined by the weight of the MST generated from its gnome and how well the 
 // MST meets the criteria of our CMST
 
-#include "../inc/individual.h"
-#include "../inc/fitness.h"
 #include "stack.c"
+#include <stdlib.h>
+#include "CMST.c"
 
 int getBias(struct individual * ind, int x, int y){
 	int edge_count = (nodes * (nodes - 1)) / 2;

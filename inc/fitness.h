@@ -1,3 +1,3 @@
-#include "individual.h"
 
-void fitness(struct individual ind);
+
+void fitness(struct individual ind, int root);
