@@ -3,17 +3,21 @@
 
 #include "stack.c"
 #include <stdlib.h>
-#include "CMST.c"
+#include <stdio.h>
+#include "../inc/individual.h"
+#include "../inc/fitness.h"
+#include "../inc/CMST.h"
 
-int getBias(struct individual * ind, int x, int y){
+
+int getBias(struct individual ind, int x, int y){
 	int edge_count = (nodes * (nodes - 1)) / 2;
 	if(x == y)
-		return (*ind).genome[x + (nodes * (nodes - 1))/2];
+		return (ind).genome[x + (nodes * (nodes - 1))/2];
 	else
-		return (*ind).genome[(((x - 1) * (x - 2)) / 2) + (y - 1)];
+		return (ind).genome[(((x - 1) * (x - 2)) / 2) + (y - 1)];
 }
 
-int getMaxCost(){
+int getMaxCost(int ** cost_matrix){
 	int max = cost_matrix[1][0];
 	int cost;
 	for(int i = 2; i < nodes; i++){
@@ -28,22 +32,22 @@ int getMaxCost(){
 	return max;
 }
 
-int getAvgCost(){
+int getAvgCost(int ** cost_matrix){
 	int cost;
 	for(int i = 1; i < nodes; i++)
 		for(int j = 0; j < i; j++)
 			cost = cost + cost_matrix[i][j];
-	return cost/edge_count;
+	return cost/((nodes * (nodes - 1)) / 2);
 }
 
-int * generateNewCostMatrix(struct individual * ind, int c_max){
-	int * new_matrix = malloc(nodes);
+int ** generateNewCostMatrix(struct individual ind, int ** cost_matrix){
+	int ** new_matrix = malloc(nodes);
 	int P1 = 1, P2 = 1;
-	int c_max = getMaxCost();
+	int c_max = getMaxCost(cost_matrix);
 
 	for(int i = 0; i < nodes; i++){
 		
-		float * costs = malloc(i+1);
+		int * costs = malloc(i+1);
 		new_matrix[i] = costs;
 
 		for( int j = 0; j < i; i++)
@@ -56,24 +60,24 @@ int * generateNewCostMatrix(struct individual * ind, int c_max){
 }
 
 
-int * prims(int * graph, int root){
+int ** prims(int ** new_matrix, int root){
 
 	printf("Prims begin");
 
-	int mst[nodes];
+	int ** mst = malloc(nodes);
 	int mst_index = 0;
 	int nodes_visited[nodes];
-	int nodes_index = 0;
+	int node_index = 0;
 	float min_cost = INT_MAX;
 	float cost = 0;
 	float prims_weight = 0;
 	int temp = 0;
 
-	nodes_visited[nodes_index] = root;
-	nodex_index++;
+	nodes_visited[node_index] = root;
+	node_index++;
 	
 
-	while(nodex_index < nodes){
+	while(node_index < nodes){
 		
 		int min_path[2];
 		
@@ -108,27 +112,27 @@ int * prims(int * graph, int root){
 	}
 	
 	printf("Prims end");
-	weight = prims_weight;
+	//weight = prims_weight;
 	return mst;
 }
 
 
-float * getBranches(int * tree, int root){
+int * getBranches(int ** tree, int root){
 
 	int * branches = { 0 };
 	struct stack s;
 	int discovered = INT_MAX;
-	
+	int v = 0;	
 	int * adj_root = getAdjacent(tree, root);
 
 	for(int i = 0; i < (sizeof(adj_root) / 4); i++){
 		realloc(branches, i + 1);
-		push(s, adj_root[i])
+		push(s, adj_root[i]);
 		while(s.top > 0){
 			v = pop(s);
-			if(new_matrix[v][v] < INT_MAX){
-				branches[i] = branches[i] + new_matrix[v][v];
-				new_matrix[v][v] = INT_MAX;							
+			if(tree[v][v] < INT_MAX){
+				branches[i] = branches[i] + tree[v][v];
+				tree[v][v] = INT_MAX;							
 			}
 			int * adjacent = getAdjacent(tree, v);
 			for(int j = 0; j < (sizeof(adjacent) / 4); j++)
@@ -142,7 +146,7 @@ float * getBranches(int * tree, int root){
 }
 
 
-int * getAdjacent(int * mst, int node){
+int * getAdjacent(int ** mst, int node){
 
 	int * adjacent = { 0 };
 	int adj_node = 0;
@@ -174,17 +178,16 @@ int * getAdjacent(int * mst, int node){
 
 */
 
-float fitness(struct individual * ind, int root)
-{
-	int cost_avg = getAvgCost();
+float fitness(struct individual ind, int root, int ** matrix){
+	int cost_avg = getAvgCost(matrix);
 	int weight = 0;
 	int branch_count = 0;
 	int branches_over = 0;
 	int max_cap = 12;
 	int cap_over = 0;
 
-	int * new_matrix = generateNewCostMatrix(ind, cost_max);
-	int * mst = prims(new_matrix, root);
+	int ** new_matrix = generateNewCostMatrix(ind, matrix);
+	int ** mst = prims(new_matrix, root);
 	int * branches = getBranches(mst, root);
 
 	branch_count = sizeof(branches) / 4;
@@ -202,6 +205,6 @@ float fitness(struct individual * ind, int root)
 	free(branches);
 
 	int fit = weight + (cap_over * (branches_over / branch_count) * cost_avg);
-	(*ind).fitness = fit;
-	
+	(ind).fitness = fit;
+	return fit;
 }

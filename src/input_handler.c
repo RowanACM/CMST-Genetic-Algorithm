@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <unistd.h>
-#include "CMST.c"
+#include <stdlib.h>
 
-int * getInputMatrix(char *filename){
+int ** getInputMatrix(char *filename, int nodes){
 
 	FILE * input = fopen(filename, "r");
-	int * cost_matrix = malloc(nodes);
+	int ** cost_matrix = malloc(nodes);
 	char s[2];
 	char temp;
 
@@ -19,6 +19,8 @@ int * getInputMatrix(char *filename){
 			cols[j] = atoi(s);
 		}
 	}
+
+	return cost_matrix;
 }
 
 

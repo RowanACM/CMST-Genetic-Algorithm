@@ -15,13 +15,17 @@
 #include "../inc/selection.h"
 #include "../inc/crossover.h"
 #include "../inc/mutation.h"
+#include "input_handler.c"
 
-#define nodes 13
+int nodes = 0;
+int genome_length = 0;
+int individual_size = 0;
 
-
-int set_globals(char * filename)
-{
-	// TODO: File IO
+int set_globals()
+{	
+	nodes = 13;
+	genome_length = (nodes * (nodes + 1)) / 2;
+	individual_size = sizeof(struct individual) + (genome_length * sizeof(int));
 	return 5;
 }
 
@@ -62,13 +66,13 @@ int main(int pop_size)
 {
 	
 	// TODO: Take input file and set globals from that
-	int genome_length = (nodes * (nodes + 1)) / 2;
-	int individual_size = sizeof(struct individual) + (sizeof(int) * (genome_length));
+	set_globals();
+	int ** matrix = getInputMatrix("cost_matrix.tsv", nodes)u
 
 	char * pop = generate_population(individual_size, pop_size, genome_length);
 	
 	for(int i = 0; i < pop_size; i++){
-		fitness(((struct individual *)pop)[i], 1);
+		fitness(((struct individual *)pop)[i], 1, matrix);
 		printf("%d, %d", i, ((struct individual *)pop)[i].fitness);
 	}
 
