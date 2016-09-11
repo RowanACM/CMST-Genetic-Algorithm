@@ -67,7 +67,7 @@ int main(int pop_size)
 	
 	// TODO: Take input file and set globals from that
 	set_globals();
-	int ** matrix = getInputMatrix("cost_matrix.tsv", nodes)u
+	int ** matrix = getInputMatrix("cost_matrix.tsv", nodes);
 
 	char * pop = generate_population(individual_size, pop_size, genome_length);
 	

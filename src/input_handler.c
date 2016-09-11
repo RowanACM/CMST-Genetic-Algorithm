@@ -10,7 +10,7 @@ int ** getInputMatrix(char *filename, int nodes){
 	char temp;
 
 	for(int i = 0; i < nodes; i++){
-		int cols[i+1];
+		int * cols = malloc(i+1);
 		cost_matrix[i] = cols;
 		for(int j = 0; j <= i; j++){
 			s[0] = fgetc(input); 
