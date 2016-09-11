@@ -1,7 +1,7 @@
 SRC_DIR := src
 
 OBJ_DIR := obj
-_OBJ    := CMST.o fitness.o selection.o crossover.o mutation.o
+_OBJ    := CMST.o fitness.o selection.o crossover.o mutation.o stack.o input_handler.o
 OBJECTS := $(patsubst %,$(OBJ_DIR)/%,$(_OBJ))
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
