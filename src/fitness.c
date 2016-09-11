@@ -4,6 +4,7 @@
 #include "stack.c"
 #include <stdlib.h>
 #include <stdio.h>
+#include <limits.h>
 #include "../inc/individual.h"
 #include "../inc/fitness.h"
 #include "../inc/CMST.h"

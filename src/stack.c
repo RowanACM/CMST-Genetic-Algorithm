@@ -1,5 +1,6 @@
 #include "../inc/stack.h"
 #include <stdlib.h>
+#include <limits.h>
 
 void push(struct stack s, int number){
 	if(s.top >= s.size){
