@@ -6,5 +6,6 @@ struct individual
 	int genome[0];
 };
 
-int ind_size;
+int individual_size;
+int genome_length;
 #endif

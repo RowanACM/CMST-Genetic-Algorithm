@@ -49,6 +49,7 @@ char * tournament_selection(char * population, int populationSize, int tournSize
 		{
 			winners[(individual_size*w)+i] = bestRef[i];
 		}//copy loop
+		
 					
 	}//winners loop 
 	

@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "CMST.h" 
+#include "../inc/CMST.h" 
 #include "individual.h"
 #include "fitness.h"
 #include "selection.h"
@@ -32,20 +32,19 @@ int set_globals(char * filename)
  */
 char * generate_population(int pop_size, int genome_length)
 {
-	char * pop = malloc(ind_size * pop_size);
+	char * pop = malloc(individual_size * pop_size);
 	
-	struct individual * ind = malloc(ind_size);
+	struct individual * ind = malloc(individual_size);
 	for(int i = 0; i < pop_size; i++)
 	{
-		(*ind).fitness = rand() % 10;
-		printf("%f \n",(*ind).fitness);
+		(*ind).fitness = rand() % 50;
 		for(int j = 0; j < genome_length; j++)
 		{
 			(*ind).genome[j] = 10 + j;
 		}
-		for(int j = 0; j < ind_size; j++)
+		for(int j = 0; j < individual_size; j++)
 		{
-			pop[(ind_size * i) + j] = ((char *) ind)[j];
+			pop[(individual_size * i) + j] = ((char *) ind)[j];
 		}
 
 	}
@@ -61,10 +60,10 @@ int main(int argc, char * argv[])
 {
 	int nodes = 5;
 	int genome_length = (nodes * (nodes + 1)) / 2;
-	ind_size = sizeof(struct individual) + (sizeof(int) * (genome_length));
+	individual_size = sizeof(struct individual) + (sizeof(int) * (genome_length));
 	//char *tournament_selection(char * population, int populationSize, int tournSize);
-	ind_size = 76;
-	char *pop = generate_population(10, genome_length);
-	char * newPop = tournament_selection(pop, 8, 5);
+	individual_size = 76;
+	char *pop = generate_population(50, genome_length);
+	char * newPop = tournament_selection(pop, 50, 5);
 	
 }
